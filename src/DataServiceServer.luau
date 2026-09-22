@@ -294,6 +294,13 @@ end
 
 function DataServiceServer._playerRemoving(self: DataServiceServer<any>, player: Player): ()
 	local profile = self._profiles[player] :: any
+
+	local waitSignal = self._waitSignals[player]
+	if waitSignal then
+		waitSignal:Destroy()
+		self._waitSignals[player] = nil
+	end
+
 	if not profile then
 		return
 	end
@@ -307,12 +314,6 @@ function DataServiceServer._playerRemoving(self: DataServiceServer<any>, player:
 
 	profile:EndSession()
 	self._profiles[player] = nil
-
-	local waitSignal = self._waitSignals[player]
-	if waitSignal then
-		waitSignal:Destroy()
-		self._waitSignals[player] = nil
-	end
 
 	self.data[player] = nil
 end
