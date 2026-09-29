@@ -297,6 +297,7 @@ function DataServiceServer._playerRemoving(self: DataServiceServer<any>, player:
 
 	local waitSignal = self._waitSignals[player]
 	if waitSignal then
+		waitSignal:Fire(nil)
 		waitSignal:Destroy()
 		self._waitSignals[player] = nil
 	end
